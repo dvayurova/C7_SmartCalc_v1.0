@@ -52,8 +52,8 @@ int validation(char *str) {
   return stop ? 0 : 1;
 }
 
-int main() {
-  char str[] = " -5.0 + ^";
-  validation(str);
-  return 0;
-}
+// int main() {
+//   char str[] = " -5.0 + ^";
+//   validation(str);
+//   return 0;
+// }

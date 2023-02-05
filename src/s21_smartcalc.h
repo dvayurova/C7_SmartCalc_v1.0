@@ -6,20 +6,33 @@
 #include <stdlib.h>
 #include <string.h>
 
-enum {
-  NUMBER = 1, X = 2, PLUS = 3; MINUS, MULT, DIVIDE, POW, MOD, SUM, SUB
-} // ПОДУМАТЬ НАД ЭТИМ
+enum { PLUS = 1, MULT, MINUS = 1, DIV, MOD = 2, EXP, FUNCS };
 
-typedef struct node_struct { // ПОДУМАТЬ НАД СТРУКТУРОЙ
-  double value;
-  node *next;
+typedef struct struct_num {
+  double num;
+  struct struct_num *next_numbers;
+} numbers;
+
+typedef struct struct_opr {
+  int operator;
+  struct struct_opr *next_operators;
   int priority;
-  type_t type;
-} node;
+} operators;
 
-node *init(int x);
-void push(node **head, int x);
-void pop(node **head);
-void destroy(node *head);
+// stack
+numbers *init_numbers(double x);
+void push_numbers(numbers **head, double x);
+void pop_numbers(numbers **head);
+// void destroy(numbers *head);
+operators *init_operators(int opr, int prior);
+void push_operators(operators **head, int opr, int prior);
+int peek_operators(operators *head);
+void pop_operators(operators **head);
+
+// parcer
+void parcer(char *str);
+int is_number(char c);
+int to_number(char *str, double *num);
+int parse_operator(char *str, int *i, operators **oper_stack);
 
 #endif // SRC_S21_SMARTCALC_H_
