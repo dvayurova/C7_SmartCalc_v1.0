@@ -60,6 +60,6 @@ int main() {
   //   printf("\n *next_operator = %p", op1->next_operators);
   //   printf("\n ----peek----");
   //   printf("\n priority = %d", peek_operators(op1));
-  char str[] = "-5 + log(2) + 256 * 2 - 5 ^ 6 + cos(10) - acos(2) * cos(5)";
+  char str[] = "6/2 + 1";
   parcer(str);
 }
