@@ -53,62 +53,77 @@ int parse_operator(char *str, int *i, operators **oper_stack,
                    numbers **num_stack) {
   int res = 0;
   if (str[*i] == '+') {
-    push_operators(oper_stack, '+', PLUS, num_stack);
+    calc_before_push(num_stack, oper_stack, PLUS);
+    push_operators(oper_stack, '+', PLUS, 2);
   }
   if (str[*i] == '-') {
-    push_operators(oper_stack, '-', MINUS, num_stack);
+    calc_before_push(num_stack, oper_stack, MINUS);
+    push_operators(oper_stack, '-', MINUS, 2);
   }
   if (str[*i] == '*') {
-    push_operators(oper_stack, '*', MULT, num_stack);
+    calc_before_push(num_stack, oper_stack, MULT);
+    push_operators(oper_stack, '*', MULT, 2);
   }
   if (str[*i] == '/') {
-    push_operators(oper_stack, '/', DIV, num_stack);
+    calc_before_push(num_stack, oper_stack, DIV);
+    push_operators(oper_stack, '/', DIV, 2);
   }
   if (str[*i] == '^') {
-    push_operators(oper_stack, '^', EXP, num_stack);
+    calc_before_push(num_stack, oper_stack, EXP);
+    push_operators(oper_stack, '^', EXP, 2);
   }
   if (str[*i] == 'm' && str[*i + 1] == 'o' && str[*i + 2] == 'd') { // mod
-    push_operators(oper_stack, 'm', MOD, num_stack);
+    calc_before_push(num_stack, oper_stack, MOD);
+    push_operators(oper_stack, 'm', MOD, 2);
     *i += 3;
   }
   if (str[*i] == 'c' && str[*i + 1] == 'o' && str[*i + 2] == 's') { // cos
-    push_operators(oper_stack, 'c', FUNCS, num_stack);
+    calc_before_push(num_stack, oper_stack, FUNCS);
+    push_operators(oper_stack, 'c', FUNCS, 1);
     *i += 3;
   }
   if (str[*i] == 's' && str[*i + 1] == 'i' && str[*i + 2] == 'n') { // sin
-    push_operators(oper_stack, 's', FUNCS, num_stack);
+    calc_before_push(num_stack, oper_stack, FUNCS);
+    push_operators(oper_stack, 's', FUNCS, 1);
     *i += 3;
   }
   if (str[*i] == 't' && str[*i + 1] == 'a' && str[*i + 2] == 'n') { // tan
-    push_operators(oper_stack, 't', FUNCS, num_stack);
+    calc_before_push(num_stack, oper_stack, FUNCS);
+    push_operators(oper_stack, 't', FUNCS, 1);
     *i += 3;
   }
   if (str[*i] == 'a' && str[*i + 1] == 'c' && str[*i + 2] == 'o' &&
       str[*i + 3] == 's') { // acos
-    push_operators(oper_stack, 'C', FUNCS, num_stack);
+    calc_before_push(num_stack, oper_stack, FUNCS);
+    push_operators(oper_stack, 'C', FUNCS, 1);
     *i += 4;
   }
   if (str[*i] == 'a' && str[*i + 1] == 's' && str[*i + 2] == 'o' &&
       str[*i + 3] == 's') { // asin
-    push_operators(oper_stack, 'S', FUNCS, num_stack);
+    calc_before_push(num_stack, oper_stack, FUNCS);
+    push_operators(oper_stack, 'S', FUNCS, 1);
     *i += 4;
   }
   if (str[*i] == 'a' && str[*i + 1] == 't' && str[*i + 2] == 'a' &&
       str[*i + 3] == 'n') { // atan
-    push_operators(oper_stack, 'T', FUNCS, num_stack);
+    calc_before_push(num_stack, oper_stack, FUNCS);
+    push_operators(oper_stack, 'T', FUNCS, 1);
     *i += 4;
   }
   if (str[*i] == 's' && str[*i + 1] == 'q' && str[*i + 2] == 'r' &&
       str[*i + 3] == 't') { // sqrt
-    push_operators(oper_stack, 'q', FUNCS, num_stack);
+    calc_before_push(num_stack, oper_stack, FUNCS);
+    push_operators(oper_stack, 'q', FUNCS, 1);
     *i += 4;
   }
   if (str[*i] == 'l' && str[*i + 1] == 'n') { // ln
-    push_operators(oper_stack, 'l', FUNCS, num_stack);
+    calc_before_push(num_stack, oper_stack, FUNCS);
+    push_operators(oper_stack, 'l', FUNCS, 1);
     *i += 2;
   }
   if (str[*i] == 'l' && str[*i + 1] == 'o' && str[*i + 2] == 'g') { // log
-    push_operators(oper_stack, 'g', FUNCS, num_stack);
+    calc_before_push(num_stack, oper_stack, FUNCS);
+    push_operators(oper_stack, 'g', FUNCS, 1);
     *i += 3;
   }
   // СКОБКИ

@@ -19,13 +19,14 @@ typedef struct struct_opr {
   struct struct_opr *next_operators;
   int priority;
   int size;
+  int required_num;
 } operators;
 
 // stack
 void push_numbers(numbers **head, double x);
 void pop_numbers(numbers **head);
 // void destroy(numbers *head);
-void push_operators(operators **head, int opr, int prior, numbers **num_stack);
+void push_operators(operators **head, int opr, int prior, int required_nums);
 // int peek_operators(operators *head);
 int pop_operators(operators **head);
 
@@ -37,8 +38,9 @@ int parse_operator(char *str, int *i, operators **oper_stack,
                    numbers **num_stack);
 
 // calc
-void get_operands(numbers **num_stack, double *a, double *b);
+void get_operands(numbers **num_stack, double *a, double *b, int required_num);
 double calc(double a, double b, operators *oper_stack);
 double count_result(numbers **num_stack, operators **oper_stack);
+void calc_before_push(numbers **num_stack, operators **oper_stack, int prior);
 
 #endif // SRC_S21_SMARTCALC_H_
