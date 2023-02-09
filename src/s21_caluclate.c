@@ -43,3 +43,22 @@ double calc(double a, double b, operators *oper_stack) {
   // printf("\n calc_res = %f\n", res);
   return res;
 }
+
+double count_result(numbers **num_stack, operators **oper_stack) {
+  double a = 0;
+  double b = 0;
+  double res = 0;
+  while ((*oper_stack)->size > 1) {
+    get_operands(num_stack, &a, &b);
+    res = calc(a, b, *oper_stack);
+    push_numbers(num_stack, res);
+    pop_operators(oper_stack);
+  }
+  get_operands(num_stack, &a, &b);
+  res = calc(a, b, *oper_stack);
+
+  // pop_numbers(num_stack);
+  // res = (*num_stack)->num;
+  printf("\n RES = %f", res);
+  return res;
+}

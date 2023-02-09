@@ -1,24 +1,27 @@
 #include "s21_smartcalc.h"
 
-numbers *init_numbers(double x) {
-  numbers *head = (numbers *)calloc(1, sizeof(numbers));
-  head->num = x;
-  head->next_numbers = NULL;
-  return head;
-}
-
 void push_numbers(numbers **head, double x) {
   numbers *tmp = (numbers *)calloc(1, sizeof(numbers));
   tmp->num = x;
-  tmp->next_numbers = *head;
-  *head = tmp;
-  printf("\n num in stack = %f", (*head)->num);
+  if (*head == NULL) {
+    tmp->size = 1;
+    tmp->next_numbers = NULL;
+    *head = tmp;
+  } else {
+    tmp->size = (*head)->size + 1;
+    tmp->next_numbers = *head;
+    *head = tmp;
+  }
+  printf("\n num in stack after push = %f, size = %d", (*head)->num,
+         (*head)->size);
 }
 void pop_numbers(numbers **head) {
-  if ((*head)->next_numbers != NULL) {
+  if (*head != NULL) {
     numbers *tmp = *head;
+    (*head)->size -= 1;
     *head = (*head)->next_numbers;
     free(tmp);
+    printf("\n pop_numbers done!");
   }
 }
 
@@ -30,14 +33,6 @@ void pop_numbers(numbers **head) {
 //   head = NULL;
 // }
 
-operators *init_operators(int opr, int prior) {
-  operators *head = (operators *)calloc(1, sizeof(operators));
-  head->operator= opr;
-  head->priority = prior;
-  head->next_operators = NULL;
-  return head;
-}
-
 void push_operators(operators **head, int opr, int prior, numbers **num_stack) {
   // printf("\n operator in stack = %c", (*head)->operator);
   // printf("\n priority in stack = %d", (*head)->priority);
@@ -45,17 +40,25 @@ void push_operators(operators **head, int opr, int prior, numbers **num_stack) {
   double a = 0;
   double b = 0;
   operators *tmp = (operators *)calloc(1, sizeof(operators));
-  if (prior <= (*head)->priority) {
+  while ((*num_stack)->size > 1 && prior <= (*head)->priority) {
     get_operands(num_stack, &a, &b);
     push_numbers(num_stack, calc(a, b, *head));
+    pop_operators(head);
   }
   tmp->operator= opr;
   tmp->priority = prior;
-  tmp->next_operators = *head;
-  *head = tmp;
+  if (*head == NULL) {
+    *head = tmp;
+    tmp->size = 1;
+  } else {
+    tmp->size = (*head)->size + 1;
+    tmp->next_operators = *head;
+    *head = tmp;
+  }
   printf("\n After push");
   printf("\n operator in stack = %c", (*head)->operator);
-  printf("\n priority in stack = %d", (*head)->priority);
+  printf("\n priority in stack = %d, size = %d", (*head)->priority,
+         (*head)->size);
   // printf("\n *next_operator = %p", (*head)->next_operators);
 }
 
@@ -63,14 +66,12 @@ void push_operators(operators **head, int opr, int prior, numbers **num_stack) {
 
 int pop_operators(operators **head) {
   int res = 0;
-  if ((*head)->next_operators != NULL) {
+  if (*head != NULL) {
     operators *tmp = *head;
+    (*head)->size -= 1;
     *head = (*head)->next_operators;
     free(tmp);
-  } else {
-    free(*head);
-    *head = NULL;
-    res = 1;
+    printf("\n pop_operators done!");
   }
   return res;
 }

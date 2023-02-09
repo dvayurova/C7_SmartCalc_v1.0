@@ -4,14 +4,13 @@ void parcer(char *str) {
   char number_tmp[255];
   int j = 0;
   int i = 0;
-
+  int str_len = 0;
   double num = 0;
   const char operators_mas[] = "+-*/^mcstal()";
   numbers *num_stack = NULL;
-  num_stack = init_numbers(0);
   operators *oper_stack = NULL;
-  oper_stack = init_operators('+', 1);
-  while (str[i] != '\0') {
+  str_len = strlen(str);
+  while (i < str_len) {
     while (is_number(str[i])) {
       number_tmp[j] = str[i];
       j++;
@@ -30,6 +29,7 @@ void parcer(char *str) {
     }
     i++;
   }
+  count_result(&num_stack, &oper_stack);
 }
 
 int is_number(char c) { return ((c >= '0' && c <= '9') || c == '.') ? 1 : 0; }
