@@ -1,5 +1,14 @@
 #include "s21_smartcalc.h"
 
+int is_sign(int i, char *str) {
+  int res = 0;
+  if ((str[i] == '-' && i == 0) || (str[i] == '(' && str[i + 1] == '-'))
+    res = 1;
+  if ((str[i] == '+' && i == 0) || (str[i] == '(' && str[i + 1] == '+'))
+    res = 1;
+  return res;
+}
+
 void parcer(char *str) {
   char number_tmp[255];
   int j = 0;
@@ -26,6 +35,9 @@ void parcer(char *str) {
     }
     if (strchr(operators_mas, str[i]) != NULL) {
       parse_operator(str, &i, &oper_stack, &num_stack);
+    }
+    if (is_sign(i, str)) {
+      push_numbers(&num_stack, 0);
     }
     i++;
   }

@@ -42,7 +42,6 @@ double calc(double a, double b, operators *oper_stack) {
   } else if (oper_stack->operator== 'g') {
     res = log10(b);
   }
-  // printf("\n calc_res = %f\n", res);
   return res;
 }
 

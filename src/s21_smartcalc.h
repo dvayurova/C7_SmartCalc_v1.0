@@ -49,7 +49,7 @@ int parse_operator(char *str, int *i, operators **oper_stack,
 void push_operators(operators **head, int opr, int prior, int required_nums);
 void push_logic(int *i, operators **oper_stack, numbers **num_stack, int n,
                 int opr, int prior, int required_nums);
-
+int is_sign(int i, char *str);
 // calc
 void get_operands(numbers **num_stack, double *a, double *b, int required_num);
 double calc(double a, double b, operators *oper_stack);

@@ -60,6 +60,6 @@ int main() {
   //   printf("\n *next_operator = %p", op1->next_operators);
   //   printf("\n ----peek----");
   //   printf("\n priority = %d", peek_operators(op1));
-  char str[] = "(1)";
+  char str[] = "(+2-3)*(-12- 10 ) + 4/(-2) + cos(-2)";
   parcer(str);
 }
