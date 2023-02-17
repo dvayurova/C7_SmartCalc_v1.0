@@ -6,7 +6,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-enum { PLUS = 1, MULT, MINUS = 1, DIV, MOD = 2, EXP, FUNCS };
+enum {
+  PLUS = 1,
+  MULT,
+  MINUS = 1,
+  DIV,
+  MOD = 2,
+  EXP,
+  FUNCS,
+  BRAC_OPEN = -10,
+  BRAC_CLOSE = -20
+};
 
 typedef struct struct_num {
   double num;
@@ -36,6 +46,9 @@ int is_number(char c);
 int to_number(char *str, double *num);
 int parse_operator(char *str, int *i, operators **oper_stack,
                    numbers **num_stack);
+void push_operators(operators **head, int opr, int prior, int required_nums);
+void push_logic(int *i, operators **oper_stack, numbers **num_stack, int n,
+                int opr, int prior, int required_nums);
 
 // calc
 void get_operands(numbers **num_stack, double *a, double *b, int required_num);

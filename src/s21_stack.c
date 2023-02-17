@@ -75,7 +75,7 @@ int pop_operators(operators **head) {
       (*head)->size -= 1;
       *head = (*head)->next_operators;
       free(tmp);
-      printf("\n pop_operators done!");
+      printf("\n pop_operators done!, size = %d", (*head)->size);
     }
   }
 

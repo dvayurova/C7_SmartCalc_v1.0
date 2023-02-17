@@ -50,14 +50,22 @@ double count_result(numbers **num_stack, operators **oper_stack) {
   double a = 0;
   double b = 0;
   double res = 0;
-  while ((*oper_stack)->size > 1) {
+  while ((*num_stack)->size > 1) {
+    if ((*oper_stack)->priority == BRAC_OPEN) {
+      pop_operators(oper_stack);
+    }
     get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
     res = calc(a, b, *oper_stack);
     push_numbers(num_stack, res);
     pop_operators(oper_stack);
   }
-  get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
-  res = calc(a, b, *oper_stack);
+  res = (*num_stack)->num;
+
+  // if ((*oper_stack)->priority != BRAC_OPEN) {
+  //   printf("\n ------if-----");
+  //   get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
+  //   res = calc(a, b, *oper_stack);
+  // }
 
   // pop_numbers(num_stack);
   // res = (*num_stack)->num;
@@ -68,12 +76,23 @@ double count_result(numbers **num_stack, operators **oper_stack) {
 void calc_before_push(numbers **num_stack, operators **oper_stack, int prior) {
   double a = 0;
   double b = 0;
-  if (*num_stack != NULL) {
+  int stop = 0;
+  if (*num_stack != NULL && prior != BRAC_OPEN) {
     while ((*num_stack)->size >= 1 && *oper_stack != NULL &&
-           prior <= (*oper_stack)->priority) {
-      get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
-      push_numbers(num_stack, calc(a, b, *oper_stack));
-      pop_operators(oper_stack);
+           prior <= (*oper_stack)->priority && !stop) {
+      printf("\n prior = %d, (*oper_stack)->priority = %d", prior,
+             (*oper_stack)->priority);
+      if (prior == BRAC_CLOSE && (*oper_stack)->priority == BRAC_OPEN) {
+        pop_operators(oper_stack);
+        stop = 1;
+        printf("\n stop = %d", stop);
+      }
+      if ((*oper_stack) != NULL && !stop) {
+        printf("\n ==================check=====================\n");
+        get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
+        push_numbers(num_stack, calc(a, b, *oper_stack));
+        pop_operators(oper_stack);
+      }
     }
   }
 }
