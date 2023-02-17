@@ -12,8 +12,8 @@ void push_numbers(numbers **head, double x) {
     tmp->next_numbers = *head;
     *head = tmp;
   }
-  printf("\n num in stack after push = %f, size = %d", (*head)->num,
-         (*head)->size);
+  // printf("\n num in stack after push = %f, size = %d", (*head)->num,
+  //        (*head)->size);
 }
 void pop_numbers(numbers **head) {
   if (*head != NULL) {
@@ -21,7 +21,7 @@ void pop_numbers(numbers **head) {
     (*head)->size -= 1;
     *head = (*head)->next_numbers;
     free(tmp);
-    printf("\n pop_numbers done!");
+    // printf("\n pop_numbers done!");
   }
 }
 
@@ -44,20 +44,20 @@ void push_operators(operators **head, int opr, int prior, int required_nums) {
   tmp->priority = prior;
   tmp->required_num = required_nums;
   if (*head == NULL) {
-    printf("\n check IF!!");
+    // printf("\n check IF!!");
     tmp->next_operators = NULL;
     tmp->size = 1;
     *head = tmp;
   } else {
-    printf("\n check ELSE!!");
+    // printf("\n check ELSE!!");
     tmp->size = (*head)->size + 1;
     tmp->next_operators = *head;
     *head = tmp;
   }
-  printf("\n After push");
-  printf(": operator in stack = %c", (*head)->operator);
-  printf(", priority in stack = %d, size = %d, required_nums = %d",
-         (*head)->priority, (*head)->size, (*head)->required_num);
+  // printf("\n After push");
+  // printf(": operator in stack = %c", (*head)->operator);
+  // printf(", priority in stack = %d, size = %d, required_nums = %d",
+  //        (*head)->priority, (*head)->size, (*head)->required_num);
   // printf("\n *next_operator = %p", (*head)->next_operators);
 }
 
@@ -69,13 +69,13 @@ int pop_operators(operators **head) {
     if ((*head)->next_operators == NULL) {
       free(*head);
       *head = NULL;
-      printf("\n pop_operators LAST done!");
+      // printf("\n pop_operators LAST done!");
     } else {
       operators *tmp = *head;
       (*head)->size -= 1;
       *head = (*head)->next_operators;
       free(tmp);
-      printf("\n pop_operators done!, size = %d", (*head)->size);
+      // printf("\n pop_operators done!, size = %d", (*head)->size);
     }
   }
 

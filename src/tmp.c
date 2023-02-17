@@ -60,6 +60,9 @@ int main() {
   //   printf("\n *next_operator = %p", op1->next_operators);
   //   printf("\n ----peek----");
   //   printf("\n priority = %d", peek_operators(op1));
-  char str[] = "-5*(-2^(-1*(10-15) + sin(4)))";
-  parcer(str);
+
+  // char str[] = "1*sin(cos(tan(5^2)^3)^4)";
+  // s21_calculator(str, 0);
+  credit_calc(651516.0, 16, 0.125, ANNUITY);
 }
+// char str[] = "sin(cos(-5.42423*(-2^(-1*(10.3242342-15) + sin(4)))))";

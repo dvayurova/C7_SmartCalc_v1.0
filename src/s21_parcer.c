@@ -1,5 +1,17 @@
 #include "s21_smartcalc.h"
 
+double s21_calculator(char *str, double x) {
+  double res = 0;
+  numbers *num_stack = NULL;
+  operators *oper_stack = NULL;
+  parcer(str, x, &num_stack, &oper_stack);
+  res = count_result(&num_stack, &oper_stack);
+  while (num_stack) {
+    pop_numbers(&num_stack);
+  }
+  return res;
+}
+
 int is_sign(int i, char *str) {
   int res = 0;
   if ((str[i] == '-' && i == 0) || (str[i] == '(' && str[i + 1] == '-'))
@@ -9,15 +21,14 @@ int is_sign(int i, char *str) {
   return res;
 }
 
-void parcer(char *str) {
+void parcer(char *str, double x, numbers **num_stack, operators **oper_stack) {
   char number_tmp[255];
   int j = 0;
   int i = 0;
   int str_len = 0;
   double num = 0;
   const char operators_mas[] = "+-*/^mcstal()";
-  numbers *num_stack = NULL;
-  operators *oper_stack = NULL;
+
   str_len = strlen(str);
   while (i < str_len) {
     while (is_number(str[i])) {
@@ -27,23 +38,22 @@ void parcer(char *str) {
     }
     if (!is_number(str[i]) && j > 0) {
       to_number(number_tmp, &num);
-      push_numbers(&num_stack, num);
+      push_numbers(num_stack, num);
 
       //   printf("\n *next_numbers = %p", num_stack->next_numbers);
       memset(&number_tmp, 0, sizeof(number_tmp));
       j = 0;
     }
+    if (str[i] == 'x' || str[i] == 'X') {
+      push_numbers(num_stack, x);
+    }
     if (strchr(operators_mas, str[i]) != NULL) {
-      parse_operator(str, &i, &oper_stack, &num_stack);
+      parse_operator(str, &i, oper_stack, num_stack);
     }
     if (is_sign(i, str)) {
-      push_numbers(&num_stack, 0);
+      push_numbers(num_stack, 0);
     }
     i++;
-  }
-  count_result(&num_stack, &oper_stack);
-  while (num_stack) {
-    pop_numbers(&num_stack);
   }
 }
 
