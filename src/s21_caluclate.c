@@ -49,22 +49,23 @@ double count_result(numbers **num_stack, operators **oper_stack) {
   double a = 0;
   double b = 0;
   double res = 0;
-  while ((*num_stack)->size > 1) {
+  while ((*oper_stack)->size != 1) {
     if ((*oper_stack)->priority == BRAC_OPEN) {
       pop_operators(oper_stack);
     }
     get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
     res = calc(a, b, *oper_stack);
     push_numbers(num_stack, res);
-    pop_operators(oper_stack);
+    if ((*oper_stack) != NULL)
+      pop_operators(oper_stack);
   }
-  res = (*num_stack)->num;
 
-  // if ((*oper_stack)->priority != BRAC_OPEN) {
-  //   printf("\n ------if-----");
-  //   get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
-  //   res = calc(a, b, *oper_stack);
-  // }
+  if ((*oper_stack)->size == 1) {
+    printf("\n ------if-----");
+    get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
+    res = calc(a, b, *oper_stack);
+  } else
+    res = (*num_stack)->num;
 
   // pop_numbers(num_stack);
   // res = (*num_stack)->num;
