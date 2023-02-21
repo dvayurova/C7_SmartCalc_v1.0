@@ -1,4 +1,4 @@
-#include "s21_smartcalc.h"
+#include "smartcalc.h"
 
 void credit_calc(double amount, int term, double rate,
                  int type) { // term in month

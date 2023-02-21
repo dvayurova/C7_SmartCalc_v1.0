@@ -1,4 +1,4 @@
-#include "s21_smartcalc.h"
+#include "smartcalc.h"
 
 void push_numbers(numbers **head, double x) {
   numbers *tmp = (numbers *)calloc(1, sizeof(numbers));
@@ -34,13 +34,10 @@ void pop_numbers(numbers **head) {
 // }
 
 void push_operators(operators **head, int opr, int prior, int required_nums) {
-  // printf("\n operator in stack = %c", (*head)->operator);
-  // printf("\n priority in stack = %d", (*head)->priority);
-  // printf("\n *next_operator = %p", (*head)->next_operators);
 
   operators *tmp = (operators *)calloc(1, sizeof(operators));
 
-  tmp->operator= opr;
+  tmp->oper = opr;
   tmp->priority = prior;
   tmp->required_num = required_nums;
   if (*head == NULL) {
