@@ -1,4 +1,4 @@
-#include "smartcalc.h"
+#include "s21_smartcalc.h"
 
 void get_operands(numbers **num_stack, double *a, double *b, int required_num) {
   *b = (*num_stack)->num;
@@ -11,35 +11,35 @@ void get_operands(numbers **num_stack, double *a, double *b, int required_num) {
 
 double calc(double a, double b, operators *oper_stack) {
   double res = 0;
-  if (oper_stack->oper == '+') {
+  if (oper_stack->operations == '+') {
     res = a + b;
-  } else if (oper_stack->oper == '-') {
+  } else if (oper_stack->operations == '-') {
     res = a - b;
-  } else if (oper_stack->oper == '*') {
+  } else if (oper_stack->operations == '*') {
     res = a * b;
-  } else if (oper_stack->oper == '/') {
+  } else if (oper_stack->operations == '/') {
     res = a / b;
-  } else if (oper_stack->oper == '^') {
+  } else if (oper_stack->operations == '^') {
     res = pow(a, b);
-  } else if (oper_stack->oper == 'm') {
+  } else if (oper_stack->operations == 'm') {
     res = fmod(a, b);
-  } else if (oper_stack->oper == 'c') {
+  } else if (oper_stack->operations == 'c') {
     res = cos(b);
-  } else if (oper_stack->oper == 's') {
+  } else if (oper_stack->operations == 's') {
     res = sin(b);
-  } else if (oper_stack->oper == 't') {
+  } else if (oper_stack->operations == 't') {
     res = tan(b);
-  } else if (oper_stack->oper == 'C') {
+  } else if (oper_stack->operations == 'C') {
     res = acos(b);
-  } else if (oper_stack->oper == 'S') {
+  } else if (oper_stack->operations == 'S') {
     res = asin(b);
-  } else if (oper_stack->oper == 'T') {
+  } else if (oper_stack->operations == 'T') {
     res = atan(b);
-  } else if (oper_stack->oper == 'q') {
+  } else if (oper_stack->operations == 'q') {
     res = sqrt(b);
-  } else if (oper_stack->oper == 'l') {
+  } else if (oper_stack->operations == 'l') {
     res = log(b);
-  } else if (oper_stack->oper == 'g') {
+  } else if (oper_stack->operations == 'g') {
     res = log10(b);
   }
   return res;
@@ -49,25 +49,19 @@ double count_result(numbers **num_stack, operators **oper_stack) {
   double a = 0;
   double b = 0;
   double res = 0;
-  int stop_flag = 0;
-  while (!stop_flag) {
-    if (*oper_stack != NULL) {
-      if ((*oper_stack)->priority == BRAC_OPEN) {
-        pop_operators(oper_stack);
-      }
-      get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
-      res = calc(a, b, *oper_stack);
-      push_numbers(num_stack, res);
-      if ((*oper_stack) != NULL)
-        pop_operators(oper_stack);
-      if ((*oper_stack) != NULL && (*oper_stack)->size == 1)
-        stop_flag = 1;
-    } else {
-      res = (*num_stack)->num;
-      stop_flag = 1;
+  while ((*oper_stack)->size != 1) {
+    if ((*oper_stack)->priority == BRAC_OPEN) {
+      pop_operators(oper_stack);
     }
+    get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
+    res = calc(a, b, *oper_stack);
+    push_numbers(num_stack, res);
+    if ((*oper_stack) != NULL)
+      pop_operators(oper_stack);
   }
-  if (*oper_stack != NULL && (*oper_stack)->size == 1) {
+
+  if ((*oper_stack)->size == 1) {
+    // printf("\n ------if-----");
     get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
     res = calc(a, b, *oper_stack);
   } else

@@ -1,5 +1,5 @@
-#ifndef SRC_SMARTCALC_H_
-#define SRC_SMARTCALC_H_
+#ifndef SRC_S21_SMARTCALC_H_
+#define SRC_S21_SMARTCALC_H_
 
 #include <math.h>
 #include <stdio.h>
@@ -27,14 +27,14 @@ typedef struct struct_num {
 } numbers;
 
 typedef struct struct_opr {
-  int oper;
+  int operations;
   struct struct_opr *next_operators;
   int priority;
   int size;
   int required_num;
 } operators;
 
-double s21_calculator(char *str, char *str_x);
+double s21_calculator(char *str, double x);
 // stack
 void push_numbers(numbers **head, double x);
 void pop_numbers(numbers **head);
@@ -62,4 +62,4 @@ void calc_before_push(numbers **num_stack, operators **oper_stack, int prior);
 // credit calc
 void credit_calc(double amount, int term, double rate, int type);
 
-#endif // SRC_SMARTCALC_H_
+#endif // SRC_S21_SMARTCALC_H_

@@ -12,7 +12,7 @@ QT_END_NAMESPACE
 extern "C"
 {
 #endif
-#include "smartcalc.h"
+#include "s21_smartcalc.h"
 #ifdef __cplusplus
 }
 #endif
@@ -30,7 +30,7 @@ private:
 
 private slots:
     void ButtonPressed();
-
+//    void get_Result();
 };
 
 #endif // MAINWINDOW_H

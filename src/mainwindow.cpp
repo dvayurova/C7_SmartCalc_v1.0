@@ -1,15 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-//#include "smartcalc.h"
-//#include "s21_caluclate.c"
-//#include "s21_parcer.c"
-//#include "s21_stack.c"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->lineEdit->setPlaceholderText("0.00");
 
     connect(ui->PushButton0, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
     connect(ui->PushButton1, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
@@ -45,6 +43,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->PushButtonAC, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
     connect(ui->PushButtonDel, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
     connect(ui->PushButtonSign, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
+
+//    connect(ui->PushButtonEqual, SIGNAL(clicked()), this, SLOT(get_Result()));
+
+
 }
 
 MainWindow::~MainWindow()
@@ -53,25 +55,42 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::ButtonPressed() {
+           printf("check");
    QPushButton *button = (QPushButton *)sender();
    QString button_text = button->text();
-   QString display_value;
+   QString display_value =  ui->lineEdit->text();
    QString x_value = ui->lineEdit_X->text();
    QByteArray ds = display_value.toLocal8Bit();
    char *str = ds.data();
-   QByteArray x_vl = x_value.toLocal8Bit();
-   char *str_x = x_vl.data();
+   double x = x_value.toDouble();
    if(button_text == "DEL"){
     QString tmp =  ui->lineEdit->text();
     tmp.chop(1);
      ui->lineEdit->setText(tmp);
    } else if(button_text == "AC"){
      ui->lineEdit->clear();
-   } else {
-     ui->lineEdit->setText(ui->lineEdit->text() += button_text);
+   } else{
+       ui->lineEdit->setText(ui->lineEdit->text() += button_text);
    }
+
    if(button_text == "=") {
-       QString str_res = QString::number(s21_calculator(str, str_x), 'g', 16);
+       printf("check!!!!!!");
+       QString str_res = QString::number(s21_calculator(str, x), 'g', 16);
           ui->lineEdit->setText(str_res);
    }
 }
+
+//void MainWindow::ButtonPressed() {
+//   QPushButton *button = (QPushButton *)sender();
+//   QString button_text = button->text();
+//   ui->lineEdit->setText(ui->lineEdit->text() += button_text);
+//}
+//void MainWindow::get_Result() {
+//   ui->lineEdit
+//    s21_calculator()
+
+//    ui->lineEdit->setText(ui->lineEdit->text() += button_text);
+
+
+//}
+
