@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <graphwidget.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -27,10 +28,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    GraphWidget graph;
 
 private slots:
     void ButtonPressed();
-//    void get_Result();
+    void GraphingButtonPressed();
 };
 
 #endif // MAINWINDOW_H

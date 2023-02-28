@@ -1,6 +1,6 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 CONFIG += c++17
 
@@ -9,8 +9,10 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    graphwidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    qcustomplot.cpp \
     s21_caluclate.c \
     s21_credit.c \
     s21_parcer.c \
@@ -18,10 +20,14 @@ SOURCES += \
     s21_validation.c
 
 HEADERS += \
+    graphwidget.h \
     mainwindow.h \
+    qcustomplot.h \
+    s21_smartcalc.h \
     smartcalc.h \
 
 FORMS += \
+    graphwidget.ui \
     mainwindow.ui
 
 # Default rules for deployment.

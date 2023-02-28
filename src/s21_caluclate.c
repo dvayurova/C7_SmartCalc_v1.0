@@ -61,15 +61,10 @@ double count_result(numbers **num_stack, operators **oper_stack) {
   }
 
   if ((*oper_stack)->size == 1) {
-    // printf("\n ------if-----");
     get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
     res = calc(a, b, *oper_stack);
   } else
     res = (*num_stack)->num;
-
-  // pop_numbers(num_stack);
-  // res = (*num_stack)->num;
-  // printf("\n RES = %f", res);
   return res;
 }
 
@@ -80,15 +75,11 @@ void calc_before_push(numbers **num_stack, operators **oper_stack, int prior) {
   if (*num_stack != NULL && prior != BRAC_OPEN) {
     while ((*num_stack)->size >= 1 && *oper_stack != NULL &&
            prior <= (*oper_stack)->priority && !stop) {
-      // printf("\n prior = %d, (*oper_stack)->priority = %d", prior,
-      //        (*oper_stack)->priority);
       if (prior == BRAC_CLOSE && (*oper_stack)->priority == BRAC_OPEN) {
         pop_operators(oper_stack);
         stop = 1;
-        // printf("\n stop = %d", stop);
       }
       if ((*oper_stack) != NULL && !stop) {
-        // printf("\n ==================check=====================\n");
         get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
         push_numbers(num_stack, calc(a, b, *oper_stack));
         pop_operators(oper_stack);

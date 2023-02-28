@@ -34,19 +34,22 @@ typedef struct struct_opr {
   int required_num;
 } operators;
 
+// validation
+int validation(char *str, double x);
+int divide_zero(int divide, double num);
+int correct_dot(char *str);
+
 double s21_calculator(char *str, double x);
 // stack
 void push_numbers(numbers **head, double x);
 void pop_numbers(numbers **head);
-// void destroy(numbers *head);
 void push_operators(operators **head, int opr, int prior, int required_nums);
-// int peek_operators(operators *head);
 int pop_operators(operators **head);
 
 // parcer
 void parcer(char *str, double x, numbers **num_stack, operators **oper_stack);
 int is_number(char c);
-int to_number(char *str, double *num);
+void to_number(char *str, double *num);
 int parse_operator(char *str, int *i, operators **oper_stack,
                    numbers **num_stack);
 void push_operators(operators **head, int opr, int prior, int required_nums);

@@ -42,8 +42,6 @@ void parcer(char *str, double x, numbers **num_stack, operators **oper_stack) {
     if (!is_number(str[i]) && j > 0) {
       to_number(number_tmp, &num);
       push_numbers(num_stack, num);
-
-      //   printf("\n *next_numbers = %p", num_stack->next_numbers);
       memset(&number_tmp, 0, sizeof(number_tmp));
       j = 0;
     }
@@ -62,19 +60,9 @@ void parcer(char *str, double x, numbers **num_stack, operators **oper_stack) {
 
 int is_number(char c) { return ((c >= '0' && c <= '9') || c == '.') ? 1 : 0; }
 
-int to_number(char *str, double *num) {
-  //   printf("\n number_tmp = %s\n", str);
-  int res = 0;
-  int i = 0;
+void to_number(char *str, double *num) {
   *num = 0;
-  if (str[i] == '.') { // IF IT CHECKS IN VALIDATION - DELETE
-    res = 1;
-  }
-  if (!res) {
-    *num = atof(str);
-  }
-  //   printf("\n double num = %f\n", *num);
-  return res;
+  *num = atof(str);
 }
 
 void push_logic(int *i, operators **oper_stack, numbers **num_stack, int n,
@@ -138,7 +126,6 @@ int parse_operator(char *str, int *i, operators **oper_stack,
   if (str[*i] == 'l' && str[*i + 1] == 'o' && str[*i + 2] == 'g') { // log
     push_logic(i, oper_stack, num_stack, 3, 'g', FUNCS, 1);
   }
-  // СКОБКИ
   if (str[*i] == '(') {
     push_logic(i, oper_stack, num_stack, 0, '(', BRAC_OPEN, 1);
   }
