@@ -40,8 +40,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->PushButtonPlus, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
   connect(ui->PushButtonEqual, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
   connect(ui->PushButtonDot, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
-  connect(ui->PushButtonAC, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
-  connect(ui->PushButtonDel, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
+  connect(ui->PushButtonAC, SIGNAL(clicked()), this, SLOT(ButtonACPressed()));
+  connect(ui->PushButtonDel, SIGNAL(clicked()), this, SLOT(ButtonDelPressed()));
   connect(ui->PushButtonSign, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
   connect(ui->PushButtonGraph, SIGNAL(clicked()), this,
           SLOT(GraphingButtonPressed()));
@@ -57,28 +57,10 @@ void MainWindow::ButtonPressed() {
   QByteArray ds = display_value.toLocal8Bit();
   char *str = ds.data();
   double x = x_value.toDouble();
-  if (button_text == "DEL") {
-    if (ui->lineEdit->hasFocus()) {
-      QString tmp = ui->lineEdit->text();
-      tmp.chop(1);
-      ui->lineEdit->setText(tmp);
-    } else if (ui->lineEdit_X->hasFocus()) {
-      QString tmp = ui->lineEdit_X->text();
-      tmp.chop(1);
-      ui->lineEdit_X->setText(tmp);
-    }
-  } else if (button_text == "AC") {
-    if (ui->lineEdit->hasFocus()) {
-      ui->lineEdit->clear();
-    } else if (ui->lineEdit_X->hasFocus()) {
-      ui->lineEdit_X->clear();
-    }
-  } else {
-    if (ui->lineEdit->hasFocus()) {
-      ui->lineEdit->setText(ui->lineEdit->text() += button_text);
-    } else if (ui->lineEdit_X->hasFocus()) {
-      ui->lineEdit_X->setText(ui->lineEdit_X->text() += button_text);
-    }
+  if (ui->lineEdit->hasFocus()) {
+    ui->lineEdit->setText(ui->lineEdit->text() += button_text);
+  } else if (ui->lineEdit_X->hasFocus()) {
+    ui->lineEdit_X->setText(ui->lineEdit_X->text() += button_text);
   }
   if (button_text == "=") {
     QString str_res = QString::number(s21_calculator(str, x), 'g', 16);
@@ -87,3 +69,23 @@ void MainWindow::ButtonPressed() {
 }
 
 void MainWindow::GraphingButtonPressed() { graph.show(); }
+
+void MainWindow::ButtonDelPressed() {
+  if (ui->lineEdit->hasFocus()) {
+    QString tmp = ui->lineEdit->text();
+    tmp.chop(1);
+    ui->lineEdit->setText(tmp);
+  } else if (ui->lineEdit_X->hasFocus()) {
+    QString tmp = ui->lineEdit_X->text();
+    tmp.chop(1);
+    ui->lineEdit_X->setText(tmp);
+  }
+}
+
+void MainWindow::ButtonACPressed() {
+  if (ui->lineEdit->hasFocus()) {
+    ui->lineEdit->clear();
+  } else if (ui->lineEdit_X->hasFocus()) {
+    ui->lineEdit_X->clear();
+  }
+}

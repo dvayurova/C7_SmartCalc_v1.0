@@ -32,6 +32,8 @@ private:
 
 private slots:
     void ButtonPressed();
+    void ButtonDelPressed();
+    void ButtonACPressed();
     void GraphingButtonPressed();
 };
 
