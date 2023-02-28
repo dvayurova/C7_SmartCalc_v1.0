@@ -108,8 +108,8 @@ int parse_operator(char *str, int *i, operators **oper_stack,
       str[*i + 3] == 's') { // acos
     push_logic(i, oper_stack, num_stack, 4, 'C', FUNCS, 1);
   }
-  if (str[*i] == 'a' && str[*i + 1] == 's' && str[*i + 2] == 'o' &&
-      str[*i + 3] == 's') { // asin
+  if (str[*i] == 'a' && str[*i + 1] == 's' && str[*i + 2] == 'i' &&
+      str[*i + 3] == 'n') { // asin
     push_logic(i, oper_stack, num_stack, 4, 'S', FUNCS, 1);
   }
   if (str[*i] == 'a' && str[*i + 1] == 't' && str[*i + 2] == 'a' &&
