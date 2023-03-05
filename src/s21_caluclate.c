@@ -49,22 +49,25 @@ double count_result(numbers **num_stack, operators **oper_stack) {
   double a = 0;
   double b = 0;
   double res = 0;
-  while ((*oper_stack)->size != 1) {
-    if ((*oper_stack)->priority == BRAC_OPEN) {
-      pop_operators(oper_stack);
-    }
-    get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
-    res = calc(a, b, *oper_stack);
-    push_numbers(num_stack, res);
-    if ((*oper_stack) != NULL)
-      pop_operators(oper_stack);
-  }
-
-  if ((*oper_stack)->size == 1) {
-    get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
-    res = calc(a, b, *oper_stack);
-  } else
+  if ((*num_stack)->size == 1 && (*oper_stack) == NULL) {
     res = (*num_stack)->num;
+  } else {
+    while ((*oper_stack)->size != 1) {
+      if ((*oper_stack)->priority == BRAC_OPEN) {
+        pop_operators(oper_stack);
+      }
+      get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
+      res = calc(a, b, *oper_stack);
+      push_numbers(num_stack, res);
+      if ((*oper_stack) != NULL)
+        pop_operators(oper_stack);
+    }
+    if ((*oper_stack)->size == 1) {
+      get_operands(num_stack, &a, &b, (*oper_stack)->required_num);
+      res = calc(a, b, *oper_stack);
+    } else
+      res = (*num_stack)->num;
+  }
   return res;
 }
 

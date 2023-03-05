@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <graphwidget.h>
-
+#include <QVector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,13 +28,18 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    GraphWidget graph;
+    GraphWidget *graph;
+
+
+signals:
+    void signal(double Xmin, double Xmax, double Ymin, double Ymax, char* str);
 
 private slots:
     void ButtonPressed();
     void ButtonDelPressed();
     void ButtonACPressed();
     void GraphingButtonPressed();
+    void ButtonEqualPressed();
 };
 
 #endif // MAINWINDOW_H

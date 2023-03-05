@@ -20,12 +20,10 @@ int correct_dot(char *str) {
     } else {
       if (str[i + 1] == '.') {
         res = 1;
-        printf("stop2.");
       }
     }
     if (dot > 1) {
       res = 1;
-      printf("stop3.");
     }
     i++;
   }
@@ -34,7 +32,6 @@ int correct_dot(char *str) {
 
 int divide_zero(int divide, double num) {
   int res = 0;
-  printf("\n num = %.10f, divide = %d \n", num, divide);
   if (divide && fabs(num) <= 1e-7) {
     res = 1;
   }
@@ -59,12 +56,13 @@ int incorrect_brackets(char *str) {
   return open_bracket == 0 ? 0 : 1;
 }
 
-int incorrect_finction(char *str) {
+int incorrect_function(char *str) {
   int res = 0;
   int str_len = 0;
   str_len = strlen(str);
   for (int i = 0; i < str_len; i++) {
-    if (str[i] == 'm' && str[i + 1] == 'o' && str[i + 2] == 'd') {
+    if (str[i] == 'm' && str[i + 1] == 'o' && str[i + 2] == 'd' &&
+        strchr("0123456789 ", str[i + 3]) != NULL) {
       i += 2;
     } else if (str[i] == 'c' && str[i + 1] == 'o' && str[i + 2] == 's' &&
                str[i + 3] == '(') {
@@ -107,17 +105,16 @@ int validation(char *str, double x) {
   double num = 0;
   int str_len = 0;
   int divide = 0;
-  const char first_char[] = "cstal0123456789(x+- ";
+  const char first_char[] = "pcstal0123456789(x+- ";
   str_len = strlen(str);
   if (strlen(str) > 255)
     stop += 1;
   stop += incorrect_brackets(str);
-  stop += incorrect_finction(str);
+  stop += incorrect_function(str);
   while (i < str_len && !stop) {
     // check first symbol e.g. it's '^' or ')'
     if (strchr(first_char, str[0]) == NULL) {
       stop += 1;
-      printf("stop1.");
     }
     if (str[i] == '/' && (str[i + 1] == 'x' || str[i + 1] == 'X')) {
       stop += divide_zero(1, x);

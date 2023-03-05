@@ -4,13 +4,16 @@ double s21_calculator(char *str, double x) {
   double res = 0;
   numbers *num_stack = NULL;
   operators *oper_stack = NULL;
-  parcer(str, x, &num_stack, &oper_stack);
-  res = count_result(&num_stack, &oper_stack);
-  while (num_stack) {
-    pop_numbers(&num_stack);
-  }
-  while (oper_stack) {
-    pop_operators(&oper_stack);
+  if (strlen(str) != 0) {
+    parcer(str, x, &num_stack, &oper_stack);
+    res = count_result(&num_stack, &oper_stack);
+
+    while (num_stack) {
+      pop_numbers(&num_stack);
+    }
+    while (oper_stack) {
+      pop_operators(&oper_stack);
+    }
   }
   return res;
 }
@@ -31,7 +34,6 @@ void parcer(char *str, double x, numbers **num_stack, operators **oper_stack) {
   int str_len = 0;
   double num = 0;
   const char operators_mas[] = "+-*/^mcstal()";
-
   str_len = strlen(str);
   while (i < str_len) {
     while (is_number(str[i])) {
@@ -58,7 +60,9 @@ void parcer(char *str, double x, numbers **num_stack, operators **oper_stack) {
   }
 }
 
-int is_number(char c) { return ((c >= '0' && c <= '9') || c == '.') ? 1 : 0; }
+int is_number(char c) {
+  return ((c >= '0' && c <= '9') || c == '.' || c == 'e') ? 1 : 0;
+}
 
 void to_number(char *str, double *num) {
   *num = 0;
@@ -71,26 +75,26 @@ void push_logic(int *i, operators **oper_stack, numbers **num_stack, int n,
   if (prior != BRAC_CLOSE) {
     push_operators(oper_stack, opr, prior, required_nums);
   }
-  *i += n;
+  *i += n - 1;
 }
 
 int parse_operator(char *str, int *i, operators **oper_stack,
                    numbers **num_stack) {
   int res = 0;
   if (str[*i] == '+') {
-    push_logic(i, oper_stack, num_stack, 0, '+', PLUS, 2);
+    push_logic(i, oper_stack, num_stack, 1, '+', PLUS, 2);
   }
   if (str[*i] == '-') {
-    push_logic(i, oper_stack, num_stack, 0, '-', MINUS, 2);
+    push_logic(i, oper_stack, num_stack, 1, '-', MINUS, 2);
   }
   if (str[*i] == '*') {
-    push_logic(i, oper_stack, num_stack, 0, '*', MULT, 2);
+    push_logic(i, oper_stack, num_stack, 1, '*', MULT, 2);
   }
   if (str[*i] == '/') {
-    push_logic(i, oper_stack, num_stack, 0, '/', DIV, 2);
+    push_logic(i, oper_stack, num_stack, 1, '/', DIV, 2);
   }
   if (str[*i] == '^') {
-    push_logic(i, oper_stack, num_stack, 0, '^', EXP, 2);
+    push_logic(i, oper_stack, num_stack, 1, '^', EXP, 2);
   }
   if (str[*i] == 'm' && str[*i + 1] == 'o' && str[*i + 2] == 'd') { // mod
     push_logic(i, oper_stack, num_stack, 3, 'm', MOD, 2);
@@ -127,10 +131,10 @@ int parse_operator(char *str, int *i, operators **oper_stack,
     push_logic(i, oper_stack, num_stack, 3, 'g', FUNCS, 1);
   }
   if (str[*i] == '(') {
-    push_logic(i, oper_stack, num_stack, 0, '(', BRAC_OPEN, 1);
+    push_logic(i, oper_stack, num_stack, 1, '(', BRAC_OPEN, 1);
   }
   if (str[*i] == ')') {
-    push_logic(i, oper_stack, num_stack, 0, ')', BRAC_CLOSE, 1);
+    push_logic(i, oper_stack, num_stack, 1, ')', BRAC_CLOSE, 1);
   }
   return res;
 }

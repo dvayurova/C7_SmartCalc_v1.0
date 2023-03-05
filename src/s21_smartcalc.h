@@ -39,7 +39,7 @@ int validation(char *str, double x);
 int divide_zero(int divide, double num);
 int correct_dot(char *str);
 int incorrect_brackets(char *str);
-int incorrect_finction(char *str);
+int incorrect_function(char *str);
 
 double s21_calculator(char *str, double x);
 // stack

@@ -3,6 +3,15 @@
 
 #include <QWidget>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+#include "s21_smartcalc.h"
+#ifdef __cplusplus
+}
+#endif
+
 namespace Ui {
 class GraphWidget;
 }
@@ -17,6 +26,12 @@ public:
 
 private:
     Ui::GraphWidget *ui;
+    double X, h;
+    int N;
+    QVector<double> x, y;
+
+public slots:
+    void slot(double Xmin, double Xmax, double Ymin, double Ymax, char* str);
 };
 
 #endif // GRAPHWIDGET_H
