@@ -32,5 +32,8 @@ creditValues credit_calc(double amount, int term, double rate,
          creditResult.monthlyPayment, creditResult.monthlyPaymentFirst,
          creditResult.monthlyPaymentLast, creditResult.overPayment,
          creditResult.totalPayment);
+  if (term <= 0 || rate <= 0) {
+    memset(&creditResult, '0', sizeof(creditResult));
+  }
   return creditResult;
 }
