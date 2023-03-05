@@ -34,6 +34,14 @@ typedef struct struct_opr {
   int required_num;
 } operators;
 
+typedef struct struct_credit {
+  double monthlyPayment;
+  double monthlyPaymentFirst;
+  double monthlyPaymentLast;
+  double overPayment;
+  double totalPayment;
+} creditValues;
+
 // validation
 int validation(char *str, double x);
 int divide_zero(int divide, double num);
@@ -65,6 +73,6 @@ double count_result(numbers **num_stack, operators **oper_stack);
 void calc_before_push(numbers **num_stack, operators **oper_stack, int prior);
 
 // credit calc
-void credit_calc(double amount, int term, double rate, int type);
+creditValues credit_calc(double amount, int term, double rate, int type);
 
 #endif // SRC_S21_SMARTCALC_H_

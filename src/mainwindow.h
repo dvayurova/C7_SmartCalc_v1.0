@@ -40,6 +40,7 @@ private slots:
     void ButtonACPressed();
     void GraphingButtonPressed();
     void ButtonEqualPressed();
+    void CreditCalc();
 };
 
 #endif // MAINWINDOW_H

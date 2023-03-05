@@ -27,7 +27,6 @@ public:
 private:
     Ui::GraphWidget *ui;
     double X, h;
-    int N;
     QVector<double> x, y;
 
 public slots:
