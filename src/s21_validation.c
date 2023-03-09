@@ -1,8 +1,9 @@
-#include "s21_smartcalc.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "s21_smartcalc.h"
 
 int correct_dot(char *str) {
   int res = 0;
@@ -15,8 +16,7 @@ int correct_dot(char *str) {
       res = 1;
     }
     if (str[i] >= '0' && str[i] <= '9') {
-      if (str[i + 1] == '.')
-        dot += 1;
+      if (str[i + 1] == '.') dot += 1;
     } else {
       if (str[i + 1] == '.') {
         res = 1;
@@ -62,7 +62,7 @@ int incorrect_function(char *str) {
   str_len = strlen(str);
   for (int i = 0; i < str_len; i++) {
     if (str[i] == 'm' && str[i + 1] == 'o' && str[i + 2] == 'd' &&
-        strchr("0123456789 ", str[i + 3]) != NULL) {
+        strchr("0123456789 -", str[i + 3]) != NULL) {
       i += 2;
     } else if (str[i] == 'c' && str[i + 1] == 'o' && str[i + 2] == 's' &&
                str[i + 3] == '(') {
@@ -97,6 +97,29 @@ int incorrect_function(char *str) {
   return res;
 }
 
+int missed_numbers(char *str) {
+  int str_len = strlen(str);
+  int stop = 0;
+  int i = 0;
+  while (i < str_len && stop < 2) {
+    if (strchr("+-*/^", str[i]) != NULL) stop += 1;
+    if (strchr("0123456789xX(", str[i]) != NULL) stop = 0;
+    if (str[i] == '(' && strchr("*/^m", str[i + 1]) != NULL) stop = 2;
+    if ((str[i] == 'x' || str[i] == 'X') &&
+        strchr("0123456789", str[i + 1]) != NULL)
+      stop = 2;
+    if (strchr("0123456789", str[i]) != NULL &&
+        (str[i + 1] == 'x' || str[i + 1] == 'X'))
+      stop = 2;
+    if (strchr("0123456789x", str[i]) != NULL && str[i + 1] == '(') stop = 2;
+    i++;
+  }
+  if (strchr("0123456789x)", str[str_len - 1]) == NULL) stop = 1;
+  printf("\n str[str_len - 1] = %c \n", str[str_len - 1]);
+  printf("\n stop = %d \n", stop);
+  return stop ? 1 : 0;
+}
+
 int validation(char *str, double x) {
   int i = 0;
   int stop = 0;
@@ -105,15 +128,17 @@ int validation(char *str, double x) {
   double num = 0;
   int str_len = 0;
   int divide = 0;
-  const char first_char[] = "pcstal0123456789(x+- ";
   str_len = strlen(str);
-  if (strlen(str) > 255)
+  if (str_len > 255) stop += 1;
+  if (str_len == 1 && strchr("0123456789", str[0]) == NULL) {
     stop += 1;
+  }
   stop += incorrect_brackets(str);
   stop += incorrect_function(str);
+  stop += missed_numbers(str);
   while (i < str_len && !stop) {
     // check first symbol e.g. it's '^' or ')'
-    if (strchr(first_char, str[0]) == NULL) {
+    if (strchr("pcstal0123456789(x+- ", str[0]) == NULL) {
       stop += 1;
     }
     if (str[i] == '/' && (str[i + 1] == 'x' || str[i + 1] == 'X')) {
@@ -137,5 +162,6 @@ int validation(char *str, double x) {
 
     i++;
   }
+  printf("\n final stop = %d \n", stop);
   return stop ? 0 : 1;
 }

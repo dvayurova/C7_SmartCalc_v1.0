@@ -48,6 +48,7 @@ int divide_zero(int divide, double num);
 int correct_dot(char *str);
 int incorrect_brackets(char *str);
 int incorrect_function(char *str);
+int missed_numbers(char *str);
 
 double s21_calculator(char *str, double x);
 // stack
@@ -75,4 +76,4 @@ void calc_before_push(numbers **num_stack, operators **oper_stack, int prior);
 // credit calc
 creditValues credit_calc(double amount, int term, double rate, int type);
 
-#endif // SRC_S21_SMARTCALC_H_
+#endif  // SRC_S21_SMARTCALC_H_

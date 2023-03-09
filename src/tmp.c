@@ -63,14 +63,14 @@ int main() {
 
   // char str[] = "sin(cos(-5.42423*(-2^(-1*(10.3242342-15) + sin(4)))))";
   // char str[] = "-1*sin(cos(tan(-x^2)^3)^4)";
-  // char str[] = "5";
-  // int valid = validation(str, 0);
-  // if (valid == 1) {
-  //   printf("\n correct!");
-  // } else {
-  //   printf("\n incorrect!");
-  // }
-  // printf("\n res= %f ", s21_calculator(str, 0));
+  char str[] = "sin(X)^2+cos(X)^2";
+  int valid = validation(str, 5);
+  if (valid == 1) {
+    printf("\n correct!");
+  } else {
+    printf("\n incorrect!");
+  }
+  printf("\n res= %f ", s21_calculator(str, 5));
 
-  credit_calc(125555.0, 24, 0.24, ANNUITY);
+  // credit_calc(125555.0, 24, 0.24, ANNUITY);
 }
