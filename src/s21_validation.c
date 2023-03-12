@@ -16,9 +16,10 @@ int correct_dot(char *str) {
       res = 1;
     }
     if (str[i] >= '0' && str[i] <= '9') {
-      if (str[i + 1] == '.') dot += 1;
+      if (i + 1 < str_len && str[i + 1] == '.')
+        dot += 1;
     } else {
-      if (str[i + 1] == '.') {
+      if (i + 1 < str_len && str[i + 1] == '.') {
         res = 1;
       }
     }
@@ -98,38 +99,43 @@ int incorrect_function(char *str) {
 }
 
 int missed_numbers(char *str) {
-  int str_len = strlen(str);
+  int str_len = 0;
+  str_len = strlen(str);
   int stop = 0;
   int i = 0;
   while (i < str_len && stop < 2) {
-    if (strchr("+-*/^", str[i]) != NULL) stop += 1;
-    if (strchr("0123456789xX(", str[i]) != NULL) stop = 0;
-    if (str[i] == '(' && strchr("*/^m", str[i + 1]) != NULL) stop = 2;
-    if ((str[i] == 'x' || str[i] == 'X') &&
-        strchr("0123456789", str[i + 1]) != NULL)
+    if (strchr("+-*/^", str[i]) != NULL)
+      stop += 1;
+    if (strchr("0123456789xX(", str[i]) != NULL)
+      stop = 0;
+    if (str[i] == '(' && strchr("*/^m", str[i + 1]) != NULL)
       stop = 2;
+    // if ((str[i] == 'x' || str[i] == 'X') &&
+    //     strchr("0123456789", str[i + 1]) != NULL)
+    //   stop = 2;
     if (strchr("0123456789", str[i]) != NULL &&
         (str[i + 1] == 'x' || str[i + 1] == 'X'))
       stop = 2;
-    if (strchr("0123456789x", str[i]) != NULL && str[i + 1] == '(') stop = 2;
+    if (strchr("0123456789x", str[i]) != NULL && str[i + 1] == '(')
+      stop = 2;
     i++;
   }
-  if (strchr("0123456789x)", str[str_len - 1]) == NULL) stop = 1;
-  printf("\n str[str_len - 1] = %c \n", str[str_len - 1]);
-  printf("\n stop = %d \n", stop);
+  if (strchr("0123456789x)", str[str_len - 1]) == NULL)
+    stop = 1;
   return stop ? 1 : 0;
 }
 
 int validation(char *str, double x) {
   int i = 0;
   int stop = 0;
-  char number_tmp[255];
+  char number_tmp[255] = "";
   int j = 0;
   double num = 0;
   int str_len = 0;
   int divide = 0;
   str_len = strlen(str);
-  if (str_len > 255) stop += 1;
+  if (str_len > 255)
+    stop += 1;
   if (str_len == 1 && strchr("0123456789", str[0]) == NULL) {
     stop += 1;
   }
@@ -162,6 +168,5 @@ int validation(char *str, double x) {
 
     i++;
   }
-  printf("\n final stop = %d \n", stop);
   return stop ? 0 : 1;
 }

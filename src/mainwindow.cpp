@@ -82,13 +82,20 @@ void MainWindow::GraphingButtonPressed() {
 
 void MainWindow::ButtonEqualPressed() {
   QString display_value = ui->lineEdit->text();
+  display_value.remove(" ");
+  qDebug() << display_value;
   QByteArray ds = display_value.toLocal8Bit();
   char *str = ds.data();
   QString x_value = ui->lineEdit_X->text();
   double x = x_value.toDouble();
   if(validation(str, x) == 1){
-      QString str_res = QString::number(s21_calculator(str, x), 'g', 16);
-      ui->lineEdit->setText(str_res);
+      double result = s21_calculator(str, x);
+      QString str_res = QString::number(result, 'g', 16);
+      if(isnan(result) || isinf(result)) {
+          ui->lineEdit->setText("ERROR! INCORRECT EXPRESSION");
+      } else {
+          ui->lineEdit->setText(str_res);
+      }
   } else {
         ui->lineEdit->setText("ERROR! INCORRECT EXPRESSION");
   }

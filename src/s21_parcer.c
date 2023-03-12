@@ -28,7 +28,7 @@ int is_sign(int i, char *str) {
 }
 
 void parcer(char *str, double x, numbers **num_stack, operators **oper_stack) {
-  char number_tmp[255];
+  char number_tmp[255] = "";
   int j = 0;
   int i = 0;
   int str_len = 0;

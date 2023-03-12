@@ -1,7 +1,8 @@
 #include "s21_smartcalc.h"
 
 void push_numbers(numbers **head, double x) {
-  numbers *tmp = (numbers *)calloc(1, sizeof(numbers));
+  numbers *tmp = NULL;
+  tmp = (numbers *)calloc(1, sizeof(numbers));
   tmp->num = x;
   if (*head == NULL) {
     tmp->size = 1;
@@ -23,7 +24,8 @@ void pop_numbers(numbers **head) {
 }
 
 void push_operators(operators **head, int opr, int prior, int required_nums) {
-  operators *tmp = (operators *)calloc(1, sizeof(operators));
+  operators *tmp = NULL;
+  tmp = (operators *)calloc(1, sizeof(operators));
   tmp->operations = opr;
   tmp->priority = prior;
   tmp->required_num = required_nums;
