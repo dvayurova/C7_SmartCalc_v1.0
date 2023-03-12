@@ -1,7 +1,7 @@
 #include <check.h>
 #include <math.h>
 
-#include "s21_smartcalc.h"
+#include "SmartCalc/s21_smartcalc.h"
 
 START_TEST(case_1) {
   char expression[255] = "122.1 + 877.9";
@@ -208,9 +208,8 @@ START_TEST(case_29) {
 END_TEST
 
 START_TEST(case_30) {
-  char expression[255] =
-      "tan(-85)*tan(15)+asin(0.8)-acos(1)/"
-      "atan(0.5)+acos(-0.3)+asin(-0.7)*atan(-0.5)";
+  char expression[255] = "tan(-85)*tan(15)+asin(0.8)-acos(1)/"
+                         "atan(0.5)+acos(-0.3)+asin(-0.7)*atan(-0.5)";
   double result = s21_calculator(expression, 0);
   ck_assert_double_eq_tol(result, 3.31540708, 1e-7);
 }
@@ -265,193 +264,184 @@ END_TEST
 
 START_TEST(case_extra_parenthesis) {
   char expression[255] = "sin(X)^2+cos(X)^2)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_empty_parenthesis_1) {
   char expression[255] = "()";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_empty_parenthesis_2) {
   char expression[255] = "sin()";
-  double x = 1;
-  int is_correct = validation(expression, x);
-  ck_assert_int_eq(is_correct, 0);
-}
-END_TEST
-
-START_TEST(case_division_by_zero_1) {
-  char expression[255] = "5/2+3/0+1";
-  double x = 0;
-  int is_correct = validation(expression, x);
-  ck_assert_int_eq(is_correct, 0);
-}
-END_TEST
-
-START_TEST(case_division_by_zero_2) {
-  char expression[255] = "(-X-(-X))*X-(X)/X+1";
-  double x = 0;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_number_1) {
   char expression[255] = "2.2324.243+5";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_number_2) {
   char expression[255] = "53435..345-2";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_number_3) {
   char expression[255] = ".-2";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_1) {
   char expression[255] = "sim(1)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_2) {
   char expression[255] = "sin(X)^2+cosX)^2)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_3) {
   char expression[255] = "sin(X)^2+cos*X)^2)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_4) {
   char expression[255] = "sin+X^2+cos(X)^2)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_5) {
   char expression[255] = "ton(X)^2+cos(X)^2)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_6) {
   char expression[255] = "acos(X)^2+aspos(X)^2)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_7) {
   char expression[255] = "asin-X)^2+cos(X)^2)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_8) {
   char expression[255] = "sqrt(*X)^2+cos(X)^2)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_9) {
   char expression[255] = "10 mod )";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_10) {
   char expression[255] = "tan(1) *+ 2";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_11) {
   char expression[255] = "atan(1) ^/ 2";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_12) {
   char expression[255] = "log(10+)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_13) {
   char expression[255] = "log(X/)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_14) {
   char expression[255] = "4x*2)";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_15) {
   char expression[255] = "+";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
 }
 END_TEST
 
 START_TEST(case_incorrect_function_16) {
   char expression[255] = "hello";
-  double x = 1;
-  int is_correct = validation(expression, x);
+  int is_correct = validation(expression);
   ck_assert_int_eq(is_correct, 0);
+}
+END_TEST
+
+START_TEST(credit_calc_annuity) {
+  creditValues result_credit = {0};
+  result_credit = credit_calc(150000, 7 * 12, 0.16, ANNUITY);
+  ck_assert_double_eq_tol(result_credit.monthlyPayment, 2979.31, 1e-1);
+  ck_assert_double_eq_tol(result_credit.overPayment, 100262.04, 1e-1);
+  ck_assert_double_eq_tol(result_credit.totalPayment, 250262.04, 1e-1);
+}
+END_TEST
+
+START_TEST(credit_calc_differ) {
+  creditValues result_credit = {0};
+  result_credit = credit_calc(150000, 7 * 12, 0.16, DIFFER);
+  ck_assert_double_eq_tol(result_credit.monthlyPaymentFirst, 3785.71, 1e-1);
+  ck_assert_double_eq_tol(result_credit.monthlyPaymentLast, 1809.52, 1e-1);
+  ck_assert_double_eq_tol(result_credit.overPayment, 85000.00, 1e-1);
+  ck_assert_double_eq_tol(result_credit.totalPayment, 235000.00, 1e-1);
+}
+END_TEST
+
+START_TEST(credit_calc_incorrect) {
+  creditValues result_credit = {0};
+  result_credit = credit_calc(150000, -5, 0.16, DIFFER);
+  ck_assert_double_eq_tol(result_credit.monthlyPaymentFirst, 0, 1e-1);
+  ck_assert_double_eq_tol(result_credit.monthlyPaymentLast, 0, 1e-1);
+  ck_assert_double_eq_tol(result_credit.overPayment, 0, 1e-1);
+  ck_assert_double_eq_tol(result_credit.totalPayment, 0, 1e-1);
 }
 END_TEST
 
@@ -499,8 +489,6 @@ Suite *smartcalc_test() {
   tcase_add_test(tc_1, case_extra_parenthesis);
   tcase_add_test(tc_1, case_empty_parenthesis_1);
   tcase_add_test(tc_1, case_empty_parenthesis_2);
-  tcase_add_test(tc_1, case_division_by_zero_1);
-  tcase_add_test(tc_1, case_division_by_zero_2);
   tcase_add_test(tc_1, case_incorrect_number_1);
   tcase_add_test(tc_1, case_incorrect_number_2);
   tcase_add_test(tc_1, case_incorrect_number_3);
@@ -520,6 +508,9 @@ Suite *smartcalc_test() {
   tcase_add_test(tc_1, case_incorrect_function_14);
   tcase_add_test(tc_1, case_incorrect_function_15);
   tcase_add_test(tc_1, case_incorrect_function_16);
+  tcase_add_test(tc_1, credit_calc_annuity);
+  tcase_add_test(tc_1, credit_calc_differ);
+  tcase_add_test(tc_1, credit_calc_incorrect);
 
   return s;
 }
@@ -530,7 +521,7 @@ int main(void) {
 
   SRunner *sr1 = srunner_create(s);
 
-  srunner_run_all(sr1, CK_NORMAL);  // CK_VERBOSE
+  srunner_run_all(sr1, CK_NORMAL); // CK_VERBOSE
   nf += srunner_ntests_failed(sr1);
   srunner_free(sr1);
 
