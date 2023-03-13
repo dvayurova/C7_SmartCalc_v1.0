@@ -12,6 +12,11 @@ MainWindow::MainWindow(QWidget *parent)
 ui->lineEdit->setFocus();
    ui->radioButtonAnnuitet->setChecked(true);
 
+   QDate date = QDate::currentDate();
+      ui->dateEditAdd->setDate(date);
+      QString formattedTime = date.toString("dd.MM.yyyy");
+      ui->textEditDateBegin->setText(formattedTime);
+
   connect(ui->PushButton0, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
   connect(ui->PushButton1, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
   connect(ui->PushButton2, SIGNAL(clicked()), this, SLOT(ButtonPressed()));
@@ -50,6 +55,7 @@ ui->lineEdit->setFocus();
   connect(ui->PushButtonGraph, SIGNAL(clicked()), this,
           SLOT(GraphingButtonPressed()));
   connect(ui->pushButtonCreditCalc, SIGNAL(clicked()), this, SLOT(CreditCalc()));
+    connect(ui->pushButtonAdd, SIGNAL(clicked()), this, SLOT(ButtonAddPressed()));
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -127,7 +133,7 @@ void MainWindow::CreditCalc() {
     double amount = 0.0;
     amount = ui->lineEditLoanSum->text().toDouble();
     int term = 0;
-   term = ui->lineEditTerm->text().toInt();
+    term = ui->lineEditTerm->text().toInt();
     double rate = 0;
     rate = ui->lineEditRate->text().toDouble();
     int type = 0;
@@ -140,16 +146,35 @@ void MainWindow::CreditCalc() {
     if(ui->comboBoxTerm->currentText() == "лет") {
         term *= 12;
     }
-creditValues creditStruct = {0, 0, 0, 0, 0};
-creditStruct = credit_calc(amount, term, rate/100,
+    creditValues creditStruct = {0, 0, 0, 0, 0};
+    creditStruct = credit_calc(amount, term, rate/100,
                                         type);
-if(type == DIFFER) {
-    ui->labelPayment->setText(QString::number(creditStruct.monthlyPaymentFirst, 'f', 2) + " ... " + QString::number(creditStruct.monthlyPaymentLast, 'f', 2) + " руб.");
-}
-if(type == ANNUITY) {
-    ui->labelPayment->setText(QString::number(creditStruct.monthlyPayment, 'f', 2) + " руб.");
-}
-ui->labelOverpay->setText(QString::number(creditStruct.overPayment, 'f', 2) + " руб.");
-ui->labelTotal->setText(QString::number(creditStruct.totalPayment, 'f', 2) + " руб.");
+    if(type == DIFFER) {
+        ui->labelPayment->setText(QString::number(creditStruct.monthlyPaymentFirst, 'f', 2) + " ... " + QString::number(creditStruct.monthlyPaymentLast, 'f', 2) + " руб.");
+    }
+    if(type == ANNUITY) {
+        ui->labelPayment->setText(QString::number(creditStruct.monthlyPayment, 'f', 2) + " руб.");
+    }
+    ui->labelOverpay->setText(QString::number(creditStruct.overPayment, 'f', 2) + " руб.");
+    ui->labelTotal->setText(QString::number(creditStruct.totalPayment, 'f', 2) + " руб.");
 
 }
+
+
+void MainWindow::DepositCalc() {
+
+}
+
+void MainWindow::ButtonAddPressed() {
+    QString AddDate = "";
+    AddDate = ui->dateEditAdd->text();
+    QString AddSumm = "";
+    AddSumm = ui->lineEditDepositAdditional->text();
+    QString AddAll = "";
+    AddAll = AddDate  + '\t' + AddSumm + '\t';
+    ui->textEditAdd->append(AddAll);
+    QByteArray ds = AddAll.toLocal8Bit();
+    char *str = ds.data();
+    printf("%s",str);
+}
+

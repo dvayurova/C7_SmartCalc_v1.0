@@ -42,6 +42,25 @@ typedef struct struct_credit {
   double totalPayment;
 } creditValues;
 
+typedef struct struct_deposit {
+  double totalInterestAmount;
+  double taxAmount;
+  double finalAmount;
+} depositValues;
+
+typedef struct amountChangeStruct {
+  int day;
+  int month;
+  int year;
+  double summ;
+} replenishmentsListValues;
+
+typedef struct date_struct {
+  int day;
+  int month;
+  int year;
+} dateStruct;
+
 // validation
 int validation(char *str);
 int divide_zero(int divide, double num);
@@ -76,4 +95,16 @@ void calc_before_push(numbers **num_stack, operators **oper_stack, int prior);
 // credit calc
 creditValues credit_calc(double amount, int term, double rate, int type);
 
-#endif  // SRC_S21_SMARTCALC_H_
+// deposit calc
+depositValues deposit_calc(double amount, int term, double rate, double taxRate,
+                           int paymentPeriod, int capitalization,
+                           char *replenishmentsList);
+int replenishmentsListParcer(char *replenishmentsList,
+                             replenishmentsListValues *amountList);
+double dailyInterest(double currentSumm, double rate, int year);
+void countCurrentSumm(double *summ, replenishmentsListValues *amountList,
+                      int replenishmentsNumber, dateStruct today);
+void getDay(dateStruct *today, int term);
+int leapYear(int year);
+
+#endif // SRC_S21_SMARTCALC_H_

@@ -41,6 +41,8 @@ class MainWindow : public QMainWindow {
   void GraphingButtonPressed();
   void ButtonEqualPressed();
   void CreditCalc();
+  void DepositCalc();
+  void ButtonAddPressed();
 };
 
 #endif  // MAINWINDOW_H
