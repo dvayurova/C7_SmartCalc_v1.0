@@ -11,6 +11,7 @@ depositValues deposit_calc(double amount, int term, double rate, double taxRate,
   dateStruct yesterday = {0};
   int replenishmentsNumber = 0;
   double currentSumm = amount;
+  double InterestToPay = 0;
   replenishmentsNumber =
       replenishmentsListParcer(replenishmentsList, amountList);
   getDay(&today, 0);
@@ -24,20 +25,31 @@ depositValues deposit_calc(double amount, int term, double rate, double taxRate,
       printf("\n yearsInterest = %f", yearsInterest * 0.13);
       yearsIncome = 0;
     }
-    // printf("\n\n Date: %d.%d.%d\n", today.day, today.month + 1,
-    //        today.year + 1900);
+    printf("\n\n Date: %d.%d.%d\n", today.day, today.month + 1,
+           today.year + 1900);
     getDay(&yesterday, i - 1);
     countCurrentSumm(&currentSumm, amountList, replenishmentsNumber, yesterday);
-    creditResult.totalInterestAmount +=
-        dailyInterest(currentSumm, rate, today.year);
-    yearsIncome += dailyInterest(currentSumm, rate, today.year);
-    // printf("\n creditResult.totalInterestAmount = %f",
-    //        creditResult.totalInterestAmount);
+    if (paymentPeriod == DAILY) {
+      InterestToPay = dailyInterest(currentSumm, rate, today.year);
+      capitalizationFunc(capitalization, &currentSumm, InterestToPay);
+      creditResult.totalInterestAmount += InterestToPay;
+      yearsIncome += InterestToPay;
+    } else if (paymentPeriod == MONTHLY && today.day == 1) {
+      InterestToPay =
+          monthlyInterest(currentSumm, rate, today.year, yesterday.day);
+      capitalizationFunc(capitalization, &currentSumm, InterestToPay);
+      creditResult.totalInterestAmount += InterestToPay;
+      yearsIncome += InterestToPay;
+    }
+
+    printf("\n creditResult.totalInterestAmount = %f",
+           creditResult.totalInterestAmount);
     currentYear = today.year;
   }
   creditResult.taxAmount += yearsInterest * taxRate;
   if (yearsIncome > 75000)
     creditResult.taxAmount += (yearsIncome - 75000) * taxRate;
+  if (creditResult.taxAmount < 0) creditResult.taxAmount = 0;
   printf("\n tax = %f", creditResult.taxAmount);
   return creditResult;
 }
@@ -63,7 +75,15 @@ int replenishmentsListParcer(char *replenishmentsList,
 double dailyInterest(double currentSumm, double rate, int year) {
   double result = 0.0;
   result = currentSumm * rate / (365 + leapYear(year));
-  // printf("\n dailyInterest = %f", result);
+  printf("\n dailyInterest = %f", result);
+  return result;
+}
+
+double monthlyInterest(double currentSumm, double rate, int year,
+                       int daysInMonth) {
+  double result = 0.0;
+  result = (currentSumm * rate / (365 + leapYear(year))) * daysInMonth;
+  printf("\n dailyInterest = %f", result);
   return result;
 }
 
@@ -74,6 +94,14 @@ void countCurrentSumm(double *summ, replenishmentsListValues *amountList,
         today.month + 1 == amountList[i].month &&
         today.year + 1900 == amountList[i].year)
       *summ += amountList[i].summ;
+  }
+}
+
+void capitalizationFunc(int capitalization, double *summ,
+                        double InterestToPay) {
+  if (capitalization == WITHCAPITAL) {
+    *summ += InterestToPay;
+    printf("\n summ after capitalization = %f", *summ);
   }
 }
 
@@ -99,7 +127,7 @@ int main() {
   //   printf("\n\nDate: %d.%d.%d\n", now->tm_mday, now->tm_mon, now->tm_year);
 
   char addSummDate[] =
-      "24/03/2023	+1000000	18/05/2023	-500000";
+      "31/05/2023	+2000000	18/11/2023	5000000";
   // char addSummDate[] = " ";
   //   replenishmentsListValues amountList[100] = {0};
   //   int count = replenishmentsListParcer(addSummDate, amountList);
@@ -124,7 +152,8 @@ int main() {
   //   printf("\n current summ = %f", summ);
   //   printf("\n dailyInterest = %f", dailyInterest(summ, 0.1, 2023));
   depositValues creditResult = {0};
-  creditResult = deposit_calc(2000000, 2000, 0.11, 0.13, 1, 0, addSummDate);
+  creditResult =
+      deposit_calc(100000, 365, 0.15, 0.13, MONTHLY, WITHCAPITAL, addSummDate);
   printf("\n totalInterestAmount = %f", creditResult.totalInterestAmount);
   // long int s_time;
   // // Указатель, в который будет помещен адрес структуры с

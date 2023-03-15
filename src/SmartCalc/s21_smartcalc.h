@@ -17,7 +17,11 @@ enum {
   BRAC_OPEN = -10,
   BRAC_CLOSE = -20,
   ANNUITY = 10,
-  DIFFER = 20
+  DIFFER = 20,
+  WITHCAPITAL = 30,
+  WITHOUTCAPITAL = 40,
+  DAILY = 50,
+  MONTHLY = 60
 };
 
 typedef struct struct_num {
@@ -106,5 +110,9 @@ void countCurrentSumm(double *summ, replenishmentsListValues *amountList,
                       int replenishmentsNumber, dateStruct today);
 void getDay(dateStruct *today, int term);
 int leapYear(int year);
+void capitalizationFunc(int capitalization, double *summ,
+                        double dailyInterestSumm);
+double monthlyInterest(double currentSumm, double rate, int year,
+                       int daysInMonth);
 
-#endif // SRC_S21_SMARTCALC_H_
+#endif  // SRC_S21_SMARTCALC_H_
