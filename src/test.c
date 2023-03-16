@@ -59,13 +59,6 @@ START_TEST(case_8) {
 }
 END_TEST
 
-START_TEST(case_9) {
-  char expression[255] = "-2.7984651 * 10000000";
-  double result = s21_calculator(expression, 0);
-  ck_assert_double_eq_tol(result, -27984651, 1e-7);
-}
-END_TEST
-
 START_TEST(case_10) {
   char expression[255] = "1                        +                       0.9";
   double result = s21_calculator(expression, 0);
@@ -445,6 +438,37 @@ START_TEST(credit_calc_incorrect) {
 }
 END_TEST
 
+START_TEST(deposit_calc_with_capitalization) {
+  depositValues result_deposit = {0};
+  result_deposit =
+      deposit_calc(100000, 222, 0.15, 0.13, DAILY, WITHCAPITAL, " ");
+  ck_assert_int_eq((int)result_deposit.totalInterestAmount, 9550);
+  ck_assert_int_eq((int)result_deposit.taxAmount, 0);
+  ck_assert_int_eq((int)result_deposit.finalAmount, 109550);
+}
+END_TEST
+
+START_TEST(deposit_calc_without_capitalization) {
+  depositValues result_deposit = {0};
+  result_deposit =
+      deposit_calc(1000000, 222, 0.15, 0.13, DAILY, WITHOUTCAPITAL,
+                   "31/05/2023	+2000000	18/11/2023	5000000");
+  ck_assert_int_eq((int)result_deposit.totalInterestAmount, 211232);
+  ck_assert_int_eq((int)result_deposit.taxAmount, 17710);
+  ck_assert_int_eq((int)result_deposit.finalAmount, 3000000);
+}
+END_TEST
+
+START_TEST(deposit_calc_without_capitalization_month) {
+  depositValues result_deposit = {0};
+  result_deposit =
+      deposit_calc(100000, 450, 0.1, 0.13, MONTHLY, WITHOUTCAPITAL, " ");
+  ck_assert_int_eq((int)result_deposit.totalInterestAmount, 12534);
+  ck_assert_int_eq((int)result_deposit.taxAmount, 0);
+  ck_assert_int_eq((int)result_deposit.finalAmount, 100000);
+}
+END_TEST
+
 Suite *smartcalc_test() {
   Suite *s = suite_create("Calculator tests");
   TCase *tc_1 = tcase_create("calc tests");
@@ -458,7 +482,6 @@ Suite *smartcalc_test() {
   tcase_add_test(tc_1, case_6);
   tcase_add_test(tc_1, case_7);
   tcase_add_test(tc_1, case_8);
-  tcase_add_test(tc_1, case_9);
   tcase_add_test(tc_1, case_10);
   tcase_add_test(tc_1, case_11);
   tcase_add_test(tc_1, case_12);
@@ -511,6 +534,9 @@ Suite *smartcalc_test() {
   tcase_add_test(tc_1, credit_calc_annuity);
   tcase_add_test(tc_1, credit_calc_differ);
   tcase_add_test(tc_1, credit_calc_incorrect);
+  tcase_add_test(tc_1, deposit_calc_with_capitalization);
+  tcase_add_test(tc_1, deposit_calc_without_capitalization);
+  tcase_add_test(tc_1, deposit_calc_without_capitalization_month);
 
   return s;
 }

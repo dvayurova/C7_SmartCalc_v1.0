@@ -73,7 +73,7 @@ QTabBar::tab:selected, QTabBar::tab:hover {
 }</string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -2270,7 +2270,7 @@ background-color:rgb(8, 4, 41);
        <string>(в % годовых)</string>
       </property>
      </widget>
-     <widget class="QLabel" name="labelOverpay_2">
+     <widget class="QLabel" name="labelTotalDep">
       <property name="geometry">
        <rect>
         <x>190</x>
@@ -2288,11 +2288,11 @@ background-color:rgb(8, 4, 41);
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="labelOverpay_3">
+     <widget class="QLabel" name="labelTax">
       <property name="geometry">
        <rect>
         <x>190</x>
-        <y>580</y>
+        <y>570</y>
         <width>181</width>
         <height>31</height>
        </rect>
@@ -2306,7 +2306,7 @@ background-color:rgb(8, 4, 41);
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="labelOverpay_4">
+     <widget class="QLabel" name="labelInterest">
       <property name="geometry">
        <rect>
         <x>190</x>
@@ -2413,6 +2413,13 @@ background-color rgb(99, 99, 100);
         <height>61</height>
        </rect>
       </property>
+      <property name="minimumDate">
+       <date>
+        <year>2023</year>
+        <month>3</month>
+        <day>17</day>
+       </date>
+      </property>
       <property name="displayFormat">
        <string>dd/MM/yyyy</string>
       </property>
@@ -2423,7 +2430,7 @@ background-color rgb(99, 99, 100);
      <widget class="QPushButton" name="pushButtonAdd">
       <property name="geometry">
        <rect>
-        <x>510</x>
+        <x>470</x>
         <y>160</y>
         <width>141</width>
         <height>41</height>
@@ -2477,6 +2484,30 @@ background-color:rgb(8, 4, 41);
 	    border-style: outset;
 	    border-color: rgb(47, 47, 47);
 }</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButtonDelete">
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>160</y>
+        <width>141</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{
+	background-color:  rgb(28, 42, 64);
+	border-style: outset;
+	border-radius: 15px;
+	border-color: rgb(33, 33, 33);
+}
+QPushButton:pressed {
+background-color:rgb(8, 4, 41); 
+}</string>
+      </property>
+      <property name="text">
+       <string>Очистить список</string>
       </property>
      </widget>
     </widget>

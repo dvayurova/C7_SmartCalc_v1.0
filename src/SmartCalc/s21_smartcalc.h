@@ -110,9 +110,16 @@ void countCurrentSumm(double *summ, replenishmentsListValues *amountList,
                       int replenishmentsNumber, dateStruct today);
 void getDay(dateStruct *today, int term);
 int leapYear(int year);
-void capitalizationFunc(int capitalization, double *summ,
+void capitalizationFunc(int capitalization, depositValues *result,
                         double dailyInterestSumm);
 double monthlyInterest(double currentSumm, double rate, int year,
                        int daysInMonth);
+void interestCount(int capitalization, double *finalAmount,
+                   double InterestToPay, double *totalInterestAmount,
+                   double *yearsIncome);
+void tax(depositValues *result, double yearsInterest, double taxRate,
+         double yearsIncome);
+void interestCalc(int capitalization, depositValues *result,
+                  double InterestToPay, double *yearsIncome);
 
 #endif  // SRC_S21_SMARTCALC_H_

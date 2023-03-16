@@ -140,5 +140,6 @@ int validation(char *str) {
     }
     i++;
   }
+  if (str_len == 1 && (str[0] == 'x' || str[0] == 'X')) stop = 0;
   return stop ? 0 : 1;
 }

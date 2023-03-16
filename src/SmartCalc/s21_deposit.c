@@ -5,15 +5,14 @@
 depositValues deposit_calc(double amount, int term, double rate, double taxRate,
                            int paymentPeriod, int capitalization,
                            char *replenishmentsList) {  // term in days
-  depositValues creditResult = {0};
+  depositValues result = {0};
   replenishmentsListValues amountList[100] = {0};
   dateStruct today = {0};
   dateStruct yesterday = {0};
-  int replenishmentsNumber = 0;
-  double currentSumm = amount;
+  int replNumber = 0;
+  result.finalAmount = amount;
   double InterestToPay = 0;
-  replenishmentsNumber =
-      replenishmentsListParcer(replenishmentsList, amountList);
+  replNumber = replenishmentsListParcer(replenishmentsList, amountList);
   getDay(&today, 0);
   int currentYear = today.year;
   double yearsInterest = 0;
@@ -22,36 +21,36 @@ depositValues deposit_calc(double amount, int term, double rate, double taxRate,
     getDay(&today, i);
     if (today.year > currentYear) {
       yearsInterest += (yearsIncome - 75000);
-      printf("\n yearsInterest = %f", yearsInterest * 0.13);
       yearsIncome = 0;
     }
-    printf("\n\n Date: %d.%d.%d\n", today.day, today.month + 1,
-           today.year + 1900);
     getDay(&yesterday, i - 1);
-    countCurrentSumm(&currentSumm, amountList, replenishmentsNumber, yesterday);
+    countCurrentSumm(&result.finalAmount, amountList, replNumber, yesterday);
     if (paymentPeriod == DAILY) {
-      InterestToPay = dailyInterest(currentSumm, rate, today.year);
-      capitalizationFunc(capitalization, &currentSumm, InterestToPay);
-      creditResult.totalInterestAmount += InterestToPay;
-      yearsIncome += InterestToPay;
+      InterestToPay = dailyInterest(result.finalAmount, rate, today.year);
+      interestCalc(capitalization, &result, InterestToPay, &yearsIncome);
     } else if (paymentPeriod == MONTHLY && today.day == 1) {
       InterestToPay =
-          monthlyInterest(currentSumm, rate, today.year, yesterday.day);
-      capitalizationFunc(capitalization, &currentSumm, InterestToPay);
-      creditResult.totalInterestAmount += InterestToPay;
-      yearsIncome += InterestToPay;
+          monthlyInterest(result.finalAmount, rate, today.year, yesterday.day);
+      interestCalc(capitalization, &result, InterestToPay, &yearsIncome);
     }
-
-    printf("\n creditResult.totalInterestAmount = %f",
-           creditResult.totalInterestAmount);
     currentYear = today.year;
   }
-  creditResult.taxAmount += yearsInterest * taxRate;
-  if (yearsIncome > 75000)
-    creditResult.taxAmount += (yearsIncome - 75000) * taxRate;
-  if (creditResult.taxAmount < 0) creditResult.taxAmount = 0;
-  printf("\n tax = %f", creditResult.taxAmount);
-  return creditResult;
+  tax(&result, yearsInterest, taxRate, yearsIncome);
+  return result;
+}
+
+void interestCalc(int capitalization, depositValues *result,
+                  double InterestToPay, double *yearsIncome) {
+  capitalizationFunc(capitalization, result, InterestToPay);
+  result->totalInterestAmount += InterestToPay;
+  *yearsIncome += InterestToPay;
+}
+
+void tax(depositValues *result, double yearsInterest, double taxRate,
+         double yearsIncome) {
+  result->taxAmount += yearsInterest * taxRate;
+  if (yearsIncome > 75000) result->taxAmount += (yearsIncome - 75000) * taxRate;
+  if (result->taxAmount < 0) result->taxAmount = 0;
 }
 
 int replenishmentsListParcer(char *replenishmentsList,
@@ -75,7 +74,6 @@ int replenishmentsListParcer(char *replenishmentsList,
 double dailyInterest(double currentSumm, double rate, int year) {
   double result = 0.0;
   result = currentSumm * rate / (365 + leapYear(year));
-  printf("\n dailyInterest = %f", result);
   return result;
 }
 
@@ -83,13 +81,12 @@ double monthlyInterest(double currentSumm, double rate, int year,
                        int daysInMonth) {
   double result = 0.0;
   result = (currentSumm * rate / (365 + leapYear(year))) * daysInMonth;
-  printf("\n dailyInterest = %f", result);
   return result;
 }
 
 void countCurrentSumm(double *summ, replenishmentsListValues *amountList,
-                      int replenishmentsNumber, dateStruct today) {
-  for (int i = 0; i < replenishmentsNumber; i++) {
+                      int replNumber, dateStruct today) {
+  for (int i = 0; i < replNumber; i++) {
     if (today.day == amountList[i].day &&
         today.month + 1 == amountList[i].month &&
         today.year + 1900 == amountList[i].year)
@@ -97,11 +94,10 @@ void countCurrentSumm(double *summ, replenishmentsListValues *amountList,
   }
 }
 
-void capitalizationFunc(int capitalization, double *summ,
+void capitalizationFunc(int capitalization, depositValues *result,
                         double InterestToPay) {
   if (capitalization == WITHCAPITAL) {
-    *summ += InterestToPay;
-    printf("\n summ after capitalization = %f", *summ);
+    result->finalAmount += InterestToPay;
   }
 }
 
@@ -121,53 +117,4 @@ int leapYear(int year) {
   int res = 0;
   if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) res = 1;
   return res;
-}
-
-int main() {
-  //   printf("\n\nDate: %d.%d.%d\n", now->tm_mday, now->tm_mon, now->tm_year);
-
-  char addSummDate[] =
-      "31/05/2023	+2000000	18/11/2023	5000000";
-  // char addSummDate[] = " ";
-  //   replenishmentsListValues amountList[100] = {0};
-  //   int count = replenishmentsListParcer(addSummDate, amountList);
-  //   for (int i = 0; i < count; i++) {
-  //     printf("\n amountList.day[%d] = %d, amountList.month[%d] = %d, "
-  //            "amountList.year[%d] = %d,  amountList.summ[%d] = %f  \n",
-  //            i, amountList[i].day, i, amountList[i].month, i,
-  //            amountList[i].year, i, amountList[i].summ);
-  //   }
-
-  //   const time_t timer = time(NULL);
-  //   struct tm *today = localtime(&timer);
-  //   today->tm_mday = amountList[0].day;
-  //   today->tm_mon = amountList[0].month;
-  //   today->tm_year = amountList[0].year;
-
-  //   printf("Date: %d.%d.%d\n", today->tm_mday, today->tm_mon,
-  //   today->tm_year); today->tm_mday += 35; time_t next = mktime(today); today
-  //   = localtime(&next); printf("Date2: %d.%d.%d\n", today->tm_mday,
-  //   today->tm_mon, today->tm_year); double summ = 100000;
-  //   countCurrentSumm(&summ, amountList, count);
-  //   printf("\n current summ = %f", summ);
-  //   printf("\n dailyInterest = %f", dailyInterest(summ, 0.1, 2023));
-  depositValues creditResult = {0};
-  creditResult =
-      deposit_calc(100000, 365, 0.15, 0.13, MONTHLY, WITHCAPITAL, addSummDate);
-  printf("\n totalInterestAmount = %f", creditResult.totalInterestAmount);
-  // long int s_time;
-  // // Указатель, в который будет помещен адрес структуры с
-  // // преобразованным временем
-  // struct tm *m_time;
-
-  // // Считываем текущее системное время
-  // s_time = time(NULL);
-
-  // // Преобразуем системное время в локальное
-  // m_time = localtime(&s_time);
-
-  // // С помощью функции asctime преобразуем локальное время в строку
-  // // и выводим результат на консоль
-  // printf("Время : %s\n", asctime(m_time));
-  return 0;
 }

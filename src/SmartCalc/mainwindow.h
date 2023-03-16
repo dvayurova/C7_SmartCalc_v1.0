@@ -43,6 +43,7 @@ class MainWindow : public QMainWindow {
   void CreditCalc();
   void DepositCalc();
   void ButtonAddPressed();
+  void ButtonDeletePressed();
 };
 
 #endif  // MAINWINDOW_H

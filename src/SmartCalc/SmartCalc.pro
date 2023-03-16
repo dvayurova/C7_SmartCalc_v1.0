@@ -15,6 +15,7 @@ SOURCES += \
     qcustomplot.cpp \
     s21_calculate.c \
     s21_credit.c \
+    s21_deposit.c \
     s21_smart_calc.c \
     s21_stack.c \
     s21_validation.c
@@ -24,7 +25,7 @@ HEADERS += \
     mainwindow.h \
     qcustomplot.h \
     s21_smartcalc.h \
-    smartcalc.h \
+
 
 FORMS += \
     graphwidget.ui \
