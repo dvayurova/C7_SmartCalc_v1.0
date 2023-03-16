@@ -62,7 +62,7 @@ dvi:
 
 check:
 	cp ../materials/linters/.clang-format ./
-	clang-format -i ./*.c
-	clang-format -i ./SmartCalc/*.cpp
-	clang-format -i ./SmartCalc/*.c
-	clang-format -i ./SmartCalc/*.h
+	clang-format -n ./*.c
+	clang-format -n ./SmartCalc/*.cpp
+	clang-format -n ./SmartCalc/*.c
+	clang-format -n ./SmartCalc/*.h

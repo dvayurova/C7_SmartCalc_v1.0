@@ -201,8 +201,9 @@ START_TEST(case_29) {
 END_TEST
 
 START_TEST(case_30) {
-  char expression[255] = "tan(-85)*tan(15)+asin(0.8)-acos(1)/"
-                         "atan(0.5)+acos(-0.3)+asin(-0.7)*atan(-0.5)";
+  char expression[255] =
+      "tan(-85)*tan(15)+asin(0.8)-acos(1)/"
+      "atan(0.5)+acos(-0.3)+asin(-0.7)*atan(-0.5)";
   double result = s21_calculator(expression, 0);
   ck_assert_double_eq_tol(result, 3.31540708, 1e-7);
 }
@@ -547,7 +548,7 @@ int main(void) {
 
   SRunner *sr1 = srunner_create(s);
 
-  srunner_run_all(sr1, CK_NORMAL); // CK_VERBOSE
+  srunner_run_all(sr1, CK_NORMAL);  // CK_VERBOSE
   nf += srunner_ntests_failed(sr1);
   srunner_free(sr1);
 

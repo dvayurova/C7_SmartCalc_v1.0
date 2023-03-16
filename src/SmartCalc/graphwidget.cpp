@@ -1,9 +1,12 @@
 #include "graphwidget.h"
-#include "ui_graphwidget.h"
+
 #include <math.h>
 
+#include "ui_graphwidget.h"
+
 GraphWidget::GraphWidget(QWidget *parent)
-    : QWidget(parent), ui(new Ui::GraphWidget)
+    : QWidget(parent),
+      ui(new Ui::GraphWidget)
 
 {
   ui->setupUi(this);

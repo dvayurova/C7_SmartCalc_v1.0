@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -198,8 +199,7 @@ void MainWindow::DepositCalc() {
     paymentPeriod = DAILY;
   else if (ui->comboBoxDepositTerm->currentText() == "раз в месяц")
     paymentPeriod = MONTHLY;
-  if (ui->checkBoxDeposit->isChecked() == true)
-    capitalization = WITHCAPITAL;
+  if (ui->checkBoxDeposit->isChecked() == true) capitalization = WITHCAPITAL;
   depositStruct = deposit_calc(amount, term, rate / 100, 0.13, paymentPeriod,
                                capitalization, add_list);
   ui->labelInterest->setText(
